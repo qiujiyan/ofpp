@@ -178,7 +178,7 @@ class FoamMesh(object):
             return None
 
     @classmethod
-    def parse_points_content(cls, content, is_binary, skip=10):
+    def parse_points_content(cls, content, is_binary, skip=0):
         """
         parse points from content
         :param content: file contents
@@ -192,7 +192,7 @@ class FoamMesh(object):
             if is_integer(lc):
                 num = int(lc)
                 if not is_binary:
-                    data = np.array([ln[1:-2].split() for ln in content[n + 2:n + 2 + num]], dtype=float)
+                    data = np.array([ln[1:-3].split() for ln in content[n + 2:n + 2 + num]], dtype=float)
                 else:
                     buf = b''.join(content[n+1:])
                     disp = struct.calcsize('c')
@@ -205,7 +205,7 @@ class FoamMesh(object):
 
 
     @classmethod
-    def parse_owner_neighbour_content(cls, content, is_binary, skip=10):
+    def parse_owner_neighbour_content(cls, content, is_binary, skip=0):
         """
         parse owner or neighbour from content
         :param content: file contents
@@ -214,8 +214,13 @@ class FoamMesh(object):
         :return: indexes as list
         """
         n = skip
+        # for i,x in enumerate(content):
+        #     content[i] = str(content[i]).replace(" ",'\n')
+            # content[i] = bytes(content[i], 'utf-8')
+        # print('content',content)
         while n < len(content):
             lc = content[n]
+            # print(' is_integer(lc)',lc, is_integer(lc))
             if is_integer(lc):
                 num = int(lc)
                 if not is_binary:
@@ -230,7 +235,7 @@ class FoamMesh(object):
         return None
 
     @classmethod
-    def parse_faces_content(cls, content, is_binary, skip=10):
+    def parse_faces_content(cls, content, is_binary, skip=0):
         """
         parse faces from content
         :param content: file contents
@@ -238,13 +243,19 @@ class FoamMesh(object):
         :param skip: skip lines
         :return: faces as list
         """
+        # for i,x in enumerate(content):
+            # content[i] = str(content[i]).replace("\r\n",'\n')
+            # content[i] = bytes(content[i], 'utf-8')
+
+
         n = skip
         while n < len(content):
             lc = content[n]
             if is_integer(lc):
                 num = int(lc)
                 if not is_binary:
-                    data = [[int(s) for s in ln[2:-2].split()] for ln in content[n + 2:n + 2 + num]]
+
+                    data = [[int(s) for s in ln[2:-3].split()] for ln in content[n + 2:n + 2 + num]]
                 else:
                     buf = b''.join(content[n+1:])
                     disp = struct.calcsize('c')
@@ -261,7 +272,7 @@ class FoamMesh(object):
         return None
 
     @classmethod
-    def parse_boundary_content(cls, content, is_binary=None, skip=10):
+    def parse_boundary_content(cls, content, is_binary=None, skip=0):
         """
         parse boundary from content
         :param content: file contents

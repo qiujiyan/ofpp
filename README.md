@@ -1,3 +1,7 @@
+# Fork From  XU Xianghua 
+
+some bug fix 
+
 # Ofpp
 Ofpp stands for OpenFOAM Python Parser. It is a simple Python library for parsing data or mesh in OpenFOAM output files to Numpy array. Both ascii and binary format are supported.
 
@@ -260,6 +264,6 @@ False
 
 
 
-## Author
+## Ori Author
 
 XU Xianghua <dayigu at gmail dot com>
